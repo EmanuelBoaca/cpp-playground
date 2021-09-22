@@ -14,7 +14,19 @@ void printOddOrEven(int number)
 		printf("ODD\n");
 	}
 }
-
+bool isNumber(char* stringToBeCheck)
+{
+	int stringLenght = strlen(stringToBeCheck);
+	if (isdigit(stringToBeCheck[0]) || stringToBeCheck[0] == '-')
+		for (int index = 1; index < stringLenght; index++)
+		{
+			if (!isdigit(stringToBeCheck[index]))
+				return false;
+		}
+	else return false;
+	return true;
+		
+}
 int main(int argc, char *argv[])
 {
 	int number = -13;
@@ -34,20 +46,30 @@ int main(int argc, char *argv[])
 	if (argc <= 1)
 	{
 		printf("No program arguments found.\n");
+		return 0;
 	}
 	
 	// TODO(Gusti): i don't know why this doesn't work, but someone please FIX it.
 	// --------------- start
 
 	// Get the first argument
-	std::string argumentAsString = argv[1];
-	const char* argumentAsCharArray = argumentAsString.c_str();
+	char* firstArgm = argv[1];
+//	std::string argumentAsString = argv[1];
+//	const char* argumentAsCharArray = argumentAsString.c_str();
 
 	//number = argv[1]; // No
 	//should use atoi?
 	// or std::stoi?
 
-	std::cout << argumentAsString << std::endl; // i think this should be removed
+	//chech if first artgument is a number
+	if (!isNumber(firstArgm))
+	{
+		std::cout << "NAN";
+		return 0;
+	}
+	number = atoi(firstArgm);
+	
+	//std::cout << argumentAsString << std::endl; // i think this should be removed
 
 	// --------------- stop
 
