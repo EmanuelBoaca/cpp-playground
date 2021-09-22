@@ -1,9 +1,18 @@
 #include <iostream>
-
+#include<string>
 bool isArmstrongNumber(int number)
 {
 	// TODO: implement some functionality to see if this number is an armstrong number
-
+	int copie = number, calculat = 0;
+	while (number)
+	{
+		int cifra = number % 10;
+		cifra = cifra * cifra * cifra;
+		calculat += cifra;
+		number /= 10;
+	}
+	if(copie==calculat)
+		return true;
 	return false;
 }
 
@@ -18,6 +27,21 @@ void printIsArmstrong(int number)
 		std::cout << "NOT Armstrong" << std::endl;
 	}
 }
+
+bool isNumber(std::string  stringToBeCheck)
+{
+	int stringLenght = stringToBeCheck.length();
+	if (isdigit(stringToBeCheck[0]) || stringToBeCheck[0] == '-')
+		for (int index = 1; index < stringLenght; index++)
+		{
+			if (!isdigit(stringToBeCheck[index]))
+				return false;
+		}
+	else return false;
+	return true;
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -51,8 +75,12 @@ int main(int argc, char *argv[])
 	// Get the first argument
 	std::string argumentAsString = argv[1];
 	
-	// TODO: read number / cast to integer
-
-	printIsArmstrong(readNumber);
+	if (isNumber(argumentAsString))
+	{
+		// TODO: read number / cast to integer
+		readNumber = std::stoi(argumentAsString);
+		printIsArmstrong(readNumber);
+	}
+	else std::cout << "Argument is not a number";
 	return 0;
 }
