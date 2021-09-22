@@ -34,7 +34,11 @@ struct Book
 	void addAuthor(Author author)
 	{
 		// TODO: add an author to the container authors array.
-		numAuthors++;
+		if (numAuthors < 5)
+		{
+			authors[numAuthors] = author;
+			numAuthors++;
+		}
 	}
 
 	void print()
@@ -42,15 +46,20 @@ struct Book
 		std::cout << "Book #" << id << std::endl;
 		std::cout << "------" << std::endl;
 		std::cout << this->title << std::endl;
-
+		std::cout << "----Autors-----" << std::endl;
 		// TODO: add all authors
-
+		for (int index = 0; index < this->numAuthors; index++)
+		{
+			this->authors[index].print();
+		}
+		std::cout << std::endl;
 	}
 };
 
 void setBookName(Book& book, std::string name)
 {
 	strncpy(book.title, name.c_str(), MAX_TITLE_LEN);
+	name[MAX_TITLE_LEN] = 0;
 }
 
 int main()
@@ -58,6 +67,7 @@ int main()
 	Book book1;
 	Book book2;
 	Book book3;
+	Book book4;
 	Author author;
 
 	// Load the data into books
@@ -84,7 +94,8 @@ int main()
 	
 	author.setName("Anna Rosling Ronnlund");
 	book3.addAuthor(author);
-
+	setBookName(book4, "A Craftsman's Guide to Software Structure and Design");
+	author.setName("Robert C. Martin");
 	// Display the books
 	book1.print();
 	book2.print();
