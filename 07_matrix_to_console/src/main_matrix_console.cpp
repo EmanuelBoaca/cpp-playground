@@ -1,28 +1,56 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
-
+#include <algorithm>
 /**
 	Define a simple matrix.
 */
 class Matrix
 {
 private:
-	size_t column_count;
-	size_t line_count;
+	size_t column_count=0;
+	size_t line_count=0;
 
 	// TODO: store the data
 	// hints: you can use std::string, std::vectors + string, char**, vector<vector<char>>, etc
+	std::vector<std::vector<char>> content;
 public:
 	Matrix(size_t numColumnsX, size_t numLinesY)
 		// TODO: add functionality
 	{
-		// TODO: add functionality
+		if (numColumnsX <= 0 || numLinesY <= 0)
+		{
+			column_count = line_count = 0;
+			return;
+		}
+
+		column_count = numColumnsX;
+		line_count = numLinesY;
+		
+		content.clear();
+		for (size_t indexY = 0; indexY < numLinesY; indexY++)
+		{
+			std::vector<char> row;
+			for (size_t indexX = 0; indexX < numColumnsX; indexX++)
+				row.push_back(' ');
+			content.push_back(row);
+		}
 	}
 
 	// Set an entire line
 	void setLine(size_t line_number, const std::string& data)
 	{
+		if (line_number < 0 || line_number >= line_count)
+		{
+			std::cout << "Line number out of range. Allowed values ar between 0 and " << line_count - 1 << std::endl; 
+			return;
+		}
+		size_t size = std::min(data.length(), column_count);
+		for (size_t indexX = 0; indexX < size; indexX++)
+		{
+			content[line_number][indexX] = data[indexX];
+		}
+
 	}
 
 	//OPTIONAL
@@ -54,13 +82,28 @@ public:
 	*/
 	void setCellXY(size_t x, size_t y, char cell_content)
 	{
-		// TODO: add functionality
+		if (x < 0 || y<0 || x>column_count||y>line_count)
+		{
+			std::cout << "Selected cell out of range! "<<std::endl;
+			return;
+		}
+		
+		content[y][x] = cell_content;
 	}
 
 	void print()
 	{
 		// print all lines and columns
-		// TODO: add functionality
+		
+		for (size_t y = 0; y < line_count; y++)
+		{
+			for (size_t x = 0; x < column_count; x++)
+			{
+				std::cout << content[y][x];
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
 	}
 };
 
