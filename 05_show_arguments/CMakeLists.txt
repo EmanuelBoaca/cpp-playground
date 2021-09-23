@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 # create variable containing project name
-set(PROJECT_NAME "04_display_book")
+set(PROJECT_NAME "05_show_arguments")
 # set project name
 project(${PROJECT_NAME})
 MESSAGE(STATUS "building ${PROJECT_NAME} ...")
