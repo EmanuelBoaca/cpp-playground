@@ -17,13 +17,18 @@ void printOddOrEven(int number)
 bool isNumber(char* stringToBeCheck)
 {
 	int stringLenght = strlen(stringToBeCheck);
-	if (isdigit(stringToBeCheck[0]) || stringToBeCheck[0] == '-')
-		for (int index = 1; index < stringLenght; index++)
+	//check if first character is not digit or sign
+	if (!(isdigit(stringToBeCheck[0]) || stringToBeCheck[0] == '-' || stringToBeCheck[0] == '+'))
+	{
+		return false;		
+	}
+	for (int index = 1; index < stringLenght; index++)
+	{
+		if (!isdigit(stringToBeCheck[index]))
 		{
-			if (!isdigit(stringToBeCheck[index]))
-				return false;
+			return false;
 		}
-	else return false;
+	}
 	return true;
 		
 }
