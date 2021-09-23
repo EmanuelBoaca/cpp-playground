@@ -49,17 +49,35 @@ std::vector<Book> readBooksFromIniFile(const std::string& file_name)
 	// TODO: BEGIN read the file -------------------------------------
 	CSimpleIniA iniReader;
 	iniReader.LoadFile(file_name.c_str());
-	std::list<CSimpleIniA::Entry> entrilist;
-	iniReader.GetAllSections(entrilist);
-	
-	for each (CSimpleIniA::Entry var in entrilist)
+	int bookscount=atoi(iniReader.GetValue("books", "count"));
+	std::string baze = "book.";
+	char* bufer = new char[10];
+	for (int i = 1; i <= bookscount; i++)
 	{
-		std::cout << var.pItem << std::endl;
 		
-		iniReader.GetSection(var.pItem).
+			Book b;
+			std::string section = baze + itoa(i, bufer, 10);
+			const char* read = nullptr;
+			read= iniReader.GetValue(section.c_str(), "name");
+			if (read == nullptr)
+			{
+				std::cout << "Some data is missing" << std:: endl;
+			}
+			b.name = read;
+			read= iniReader.GetValue(section.c_str(), "author");
+			if (read == nullptr)
+			{
+				std::cout << "Some data is missing" << std::endl;
+			}
+			b.authors = read;
+			results.push_back(b);
+		
+		
+		
+
 	}
 
-
+	
 	// E.g. Book myBook;
 	//		// build the section name (E.g. book.1)
 	//		std::stringstream ss;
@@ -80,7 +98,7 @@ int main()
 	// Using the SimpleINI C++ Lib: https://github.com/brofield/simpleini
 
 	// Read the data
-	std::string input_data("D:/test/Folder nou (2)/cpp-playground/data/ermahgerd_berks.ini");
+	std::string input_data("../../data/ermahgerd_berks.ini");
 	std::cout << "Reading the data from " << input_data << std::endl;
 	std::vector<Book> books_from_file = readBooksFromIniFile(input_data);
 
