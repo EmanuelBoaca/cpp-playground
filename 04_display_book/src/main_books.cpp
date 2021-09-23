@@ -26,7 +26,7 @@ struct Author
 struct Book
 {
 	int id;
-	char title[50];
+	char title[MAX_TITLE_LEN+1];
 
 	int numAuthors;
 	Author authors[5];
@@ -59,7 +59,7 @@ struct Book
 void setBookName(Book& book, std::string name)
 {
 	strncpy(book.title, name.c_str(), MAX_TITLE_LEN);
-	name[MAX_TITLE_LEN] = 0;
+	book.title[MAX_TITLE_LEN] = 0;
 }
 
 int main()
