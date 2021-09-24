@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include<vector>
 #include <time.h>
-
+#include <fstream>
 
 #define MINIM_X_SIZE 20
 #define MINIM_Y_SIZE 20
@@ -10,6 +10,15 @@ int board_size_x = MINIM_X_SIZE;
 int board_size_y = MINIM_Y_SIZE;
 std::vector<std::vector<bool>> curentboard;
 std::vector<std::vector<bool>> prevewsboard;
+enum class shapes {
+	BLOCK,
+	BOAT,
+	BLINKER,
+	BEACON,
+	PULSAR,
+	PENTADECATHOLON,
+	GLIDER
+} ;
 
  void setboardSize(int x_size, int y_size)
 {
@@ -54,7 +63,7 @@ std::vector<std::vector<bool>> prevewsboard;
 		 prevewsboard.clear();
 		 for each (std::vector<bool> var in curentboard)
 		 {
-			 prevewsboard.push_back(var);
+			 prevewsboard.push_back(std::vector<bool>(var));
 		 }
 	 
  }
@@ -76,17 +85,17 @@ std::vector<std::vector<bool>> prevewsboard;
 		 for (int x = 0; x < board_size_x; x++)
 		 {
 			 int neighborh = 0;
-			 for (int i = -1; i < 1; i++)
+			 for (int i = -1; i <= 1; i++)
 			 {
 				 int neiby = y + i;
-				 for (int j = -1; j < 1; j++)
+				 for (int j = -1; j <= 1; j++)
 				 {
 					 int neibx = x + j;
 					 if (neiby < 0 || neibx < 0 || neibx >= board_size_x || neiby >= board_size_y)
 					 {
 						 continue;
 					 }
-					 if (i == j == 0)
+					 if (i == 0 && j==0)
 					 {
 						 continue;
 					 }
@@ -130,13 +139,19 @@ std::vector<std::vector<bool>> prevewsboard;
  }
  void afisare()
  {
-	 
+	 for (int i = 0; i < board_size_x + 2; i++)
+		 std::cout << "?";
+		std::cout << std::endl;
 	 for (int i = 0; i < board_size_y; i++)
 	 {
+		 std::cout << "?";
 		 for (int j = 0; j < board_size_x; j++)
 			 afisare(j, i);
-		 std::cout << std::endl;
+		 std::cout <<"?"<< std::endl;
 	 }
+	 for (int i = 0; i < board_size_x + 2; i++)
+		 std::cout << "?";
+	 std::cout << std::endl;
  }
  void init()
  {
@@ -154,14 +169,243 @@ std::vector<std::vector<bool>> prevewsboard;
 	 }
  }
 
+ void save(std::string path)
+ {
+	// save(0, 0, board_size_x, board_size_y,path);
+ }
+ void drawBlock(int x, int y)
+ {
+	 for (int i = 0; i < 4; i++)
+	 {
+		 for (int j = 0; j < 4; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (i == 0 || i == 3 || j == 0 || j == 3)
+				 {
+					 curentboard[tempy][tempx] = false;
+				 }
+				 else
+				 {
+					 curentboard[tempy][tempx] = true;
+
+				 }
+			 }
+		 }
+	 }
+ }
+ void drawBoat(int x, int y)
+ {
+	 for (int i = 0; i < 5; i++)
+	 {
+		 for (int j = 0; j < 5; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (i == 0 || i == 4 || j == 0 || j == 4)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+
+				 }
+				 if ((i == 1 && j == 3) || (j == 1 && i == 3) || (j == 3 && i == 3)||(j==2&&i==2))
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 curentboard[tempy][tempx] = true;
+			 }
+		 }
+	 }
+ }
+ void drawBlinker(int x, int y)
+ {
+
+	 for (int i = 0; i < 5; i++)
+	 {
+		 for (int j = 0; j < 5; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (i >= 1 && i <= 3 && j == 2)
+				 {
+					 curentboard[tempy][tempx] = true;
+				 }
+				 else
+				 {
+					 curentboard[tempy][tempx] = false;
+				 }
+			 }
+		 }
+	 }
+ }
+ void drawBeacon(int x, int y)
+ {
+
+	 for (int i = 0; i < 6; i++)
+	 {
+		 for (int j = 0; j < 6; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (( i==1 && (j==1 || j==2) ) || (i==2 && j==1 )|| (i == 4 && (j == 3 || j == 4)) || (i == 3 && j == 4))
+
+
+				 {
+					 curentboard[tempy][tempx] = true;
+				 }
+				 else
+				 {
+					 curentboard[tempy][tempx] = false;
+				 }
+			 }
+		 }
+	 }
+ }
+
+ void drawGlider(int x, int y)
+ {
+
+	 for (int i = 0; i < 5; i++)
+	 {
+		 for (int j = 0; j < 5; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (i == 0 || i == 4 || j == 0 || j == 4)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 if ((i == 1 && (j == 1 || j == 3)) || (i == 2 && (j == 1 || j == 2))) {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 curentboard[tempy][tempx] = true;
+				 
+			 }
+		 }
+	 }
+ }
+ void drawPulsar(int x, int y)
+ {
+	 for (int i = 0; i < 17; i++)
+	 {
+		 for (int j = 0; j < 17; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 //drawng the border and empty lines from pozition 4 8 and 12
+				 if (i == 0 || i == 16 || j == 0 || j == 16 || i == 4 || i == 8 || i == 12 || j == 4 || j == 8 || j == 12)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 //drawing the 3x3 sqare in the corners
+				 if ((i >= 1 && i <= 3) && (j >= 1 && j <= 3)||
+					 (i >= 1 && i <= 3) && (j >= 13 && j <= 15)||
+					 (i >= 13 && i <= 15) && (j >= 1 && j <= 3)||
+					 (i >= 13 && i <= 15) && (j >= 13 && j <= 15))
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				// drawng the rectangle between L shapes
+				 if ((i >= 6 && i <= 10) && (j == 1 || j == 2||j==14||j==15) ||
+					 (j >= 6 && j <= 10) && (i == 1 || i == 2||i==14||i==15))
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 //drawing the litel dreptangle 
+				 if (((i == 3 || i == 13) && (j == 7 || j == 9)) || ((j == 3 || j == 13) && (i == 7 || i == 9)))
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 //drawing the diagonales
+				 if (i == j || j == 16 - i)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 //fill evriting left whith live cells
+				 curentboard[tempy][tempx] = true;
+					 
+			 }
+
+		 }
+	 }
+ }
+
+ void drawPendadecatholon(int x, int y)
+ {
+
+	 for (int i = 0; i < 18; i++)
+	 {
+		 for (int j = 0; j < 11; j++)
+		 {
+			 int tempx = x + i;
+			 int tempy = y + j;
+			 if (tempx >= 0 && tempx < board_size_x && tempy >= 0 && tempy < board_size_y)
+			 {
+				 if (i < 4 || i>13 || j < 4 || j>6)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 if ((i == 4 || i == 5 || i == 12 || i == 13|| (i > 6 && i < 11)) && (j == 4 || j == 6))
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+				 if ( (i==6||i==11)&&j==5)
+				 {
+					 curentboard[tempy][tempx] = false;
+					 continue;
+				 }
+
+				 curentboard[tempy][tempx] = true;
+			 }
+		 }
+	 }
+ }
+ void drawShape(shapes name, int x, int y)
+ {
+	 switch (name)
+	 {
+	 case shapes::BLOCK : drawBlock(x, y); break;
+	 case shapes::BOAT : drawBoat(x, y); break;
+	 case shapes::BLINKER : drawBlinker(x, y); break;
+	 case shapes::BEACON : drawBeacon(x, y); break;
+	 case shapes::GLIDER: drawGlider(x, y); break;
+	 case shapes::PULSAR: drawPulsar(x, y); break;
+	 case shapes::PENTADECATHOLON:drawPendadecatholon(x, y); break;
+	 }
+ }
+
 int main()
 {
 	init();
-	randomize();
+	//randomize();
+	drawShape(shapes::PENTADECATHOLON, 0, 0);
 	for (int i = 0; i < 100; i++)
 	{
 		
 		afisare();
+
 		std::cout << std::endl;
 		nextBoard();
 	}
