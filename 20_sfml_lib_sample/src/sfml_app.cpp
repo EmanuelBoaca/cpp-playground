@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <thread>
-
+#include "game_of_life.h"
 SfmlApp::SfmlApp(
 	std::pair<unsigned int, unsigned int> window_size,
 	std::pair<unsigned int, unsigned int> cell_size
@@ -10,6 +10,7 @@ SfmlApp::SfmlApp(
 	: window_({ window_size.first, window_size.second }, "My window")
 	, cell_size_(cell_size)
 {
+	
 }
 
 SfmlApp::~SfmlApp()
@@ -56,7 +57,7 @@ void SfmlApp::init()
 	// Store the world size for later use.
 	world_size_.first = max_width / cell_size_.first - 1;
 	world_size_.second = max_height / cell_size_.second - 1;
-
+	setboardSize(world_size_.first, world_size_.second);
 	// Initialize the world map with vertices.
 	for (size_t cell_y = 0; cell_y < max_height / cell_size_.first - 1; cell_y++)
 	{
@@ -73,7 +74,7 @@ void SfmlApp::run()
 	bool simulation_active(true);
 	// TODO: it would be nice to make this configurable in the future.
 	unsigned duration_in_millis_between_updates = 1000;
-
+	enum class presed{ NONE,LEFT,RIGHT,MIDDEL} mousebtn_pressed=presed::NONE ;
 	// run the program as long as the window is open
 	while (window_.isOpen())
 	{
@@ -105,22 +106,69 @@ void SfmlApp::run()
 					simulation_active = !simulation_active;
 					gui_text_.setString(getMessageForActiveStatus(simulation_active));
 				}
+				if (event.key.code == sf::Keyboard::Add)
+				{
+					duration_in_millis_between_updates -= 10;
+					if (duration_in_millis_between_updates < 50)
+						duration_in_millis_between_updates = 50;
+				}
+				if (event.key.code == sf::Keyboard::Subtract)
+				{
+					duration_in_millis_between_updates += 10;
+					
+				}
 			}
-			if (event.type == sf::Event::MouseButtonReleased)
+			if (event.type == sf::Event::MouseMoved)
 			{
-				if (event.mouseButton.button == sf::Mouse::Button::Left)
+				if (mousebtn_pressed == presed::LEFT)
+				{
+
+					size_t view_width = static_cast<size_t>(window_.getView().getSize().x);
+					size_t view_height = static_cast<size_t>(window_.getView().getSize().y);
+					size_t win_width = static_cast<size_t>(window_.getSize().x);
+					size_t win_height = static_cast<size_t>(window_.getSize().y);
+
+					int clicked_cell_x = event.mouseMove.x * view_width / (cell_size_.first * win_width);
+					int clicked_cell_y = event.mouseMove.y * view_height / (cell_size_.second * win_height);
+
+					// TODO: maybe update a world matrix?
+					setCellColor(clicked_cell_x, clicked_cell_y, living_cell_color_);
+					drawPixel(clicked_cell_x, clicked_cell_y, true);
+
+				}
+				if (mousebtn_pressed == presed::RIGHT)
 				{
 					size_t view_width = static_cast<size_t>(window_.getView().getSize().x);
 					size_t view_height = static_cast<size_t>(window_.getView().getSize().y);
 					size_t win_width = static_cast<size_t>(window_.getSize().x);
 					size_t win_height = static_cast<size_t>(window_.getSize().y);
 
-					unsigned clicked_cell_x = event.mouseButton.x * view_width / (cell_size_.first * win_width);
-					unsigned clicked_cell_y = event.mouseButton.y * view_height / (cell_size_.second * win_height);
+					int clicked_cell_x = event.mouseMove.x * view_width / (cell_size_.first * win_width);
+					int clicked_cell_y = event.mouseMove.y * view_height / (cell_size_.second * win_height);
 
 					// TODO: maybe update a world matrix?
-					setCellColor(clicked_cell_x, clicked_cell_y, living_cell_color_);
+					setCellColor(clicked_cell_x/ cell_size_.first, clicked_cell_y, dead_cell_color_);
+					drawPixel(clicked_cell_x, clicked_cell_y, false);
 				}
+			}
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Button::Left)
+				{
+					mousebtn_pressed = presed::LEFT;
+				}
+				if (event.mouseButton.button == sf::Mouse::Button::Right)
+				{
+					mousebtn_pressed = presed::RIGHT;
+				}
+			}
+			if (event.type == sf::Event::MouseButtonReleased)
+			{
+				
+					mousebtn_pressed = presed::NONE;
+				
+				
+				
 			}
 		}
 
@@ -199,6 +247,17 @@ void SfmlApp::render()
 void SfmlApp::updateWorld()
 {
 	// TODO: feel free to add function arguments as deemed necessary.
+	nextBoard();
+	for(int i=0;i<world_size_.second;i++)
+		for (int j = 0; j < world_size_.first; j++)
+		{
+			if (isAlive(j, i))
+			{
+				setCellColor(j,i, living_cell_color_);
+			}
+			else 
+				setCellColor(j, i, dead_cell_color_);
+		}
 
-	setCellColor(rand() % world_size_.first, rand() % world_size_.second, living_cell_color_);
+	
 }
