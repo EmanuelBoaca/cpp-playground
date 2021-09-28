@@ -28,7 +28,7 @@ struct Book
 	int id;
 	char title[MAX_TITLE_LEN+1];
 
-	int numAuthors;
+	int numAuthors ;
 	Author authors[5];
 
 	void addAuthor(Author author)
@@ -46,13 +46,13 @@ struct Book
 		std::cout << "Book #" << id << std::endl;
 		std::cout << "------" << std::endl;
 		std::cout << this->title << std::endl;
-		std::cout << "----Autors-----" << std::endl;
+		std::cout << "----Autors----- (" << std::endl;
 		// TODO: add all authors
 		for (int index = 0; index < this->numAuthors; index++)
 		{
 			this->authors[index].print();
 		}
-		std::cout << std::endl;
+		std::cout <<")"<< std::endl;
 	}
 };
 
@@ -94,11 +94,16 @@ int main()
 	
 	author.setName("Anna Rosling Ronnlund");
 	book3.addAuthor(author);
+
+	book4.id = 4;
+	book4.numAuthors = 0;
 	setBookName(book4, "A Craftsman's Guide to Software Structure and Design");
 	author.setName("Robert C. Martin");
+	book4.addAuthor(author);
 	// Display the books
 	book1.print();
 	book2.print();
 	book3.print();
+	book4.print();
 	return 0;
 }

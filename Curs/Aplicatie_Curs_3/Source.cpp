@@ -99,7 +99,7 @@ void memLeak()
 
   while(1)    // generates an infinite loop, condition remains true indefinetly.
   {
-      int size = 999999;
+      int size = 99999999999;
       int *myArray = new int[size];   // allocate an integer array with given size, 13
       
         for (int i = 0; i< size; ++i)

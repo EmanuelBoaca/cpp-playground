@@ -9,15 +9,15 @@
 
 int board_size_x = MINIM_X_SIZE;
 int board_size_y = MINIM_Y_SIZE;
-std::vector<std::vector<bool>> curentboard;
-std::vector<std::vector<bool>> prevewsboard;
+std::vector<std::vector<bool>> currentBoard;
+std::vector<std::vector<bool>> previousBoard;
 void setboardSize(int x_size, int y_size)
 {
 
 	if (x_size < MINIM_X_SIZE || y_size < MINIM_Y_SIZE)
 	{
 		std::cout << "The size of dimension must bee bigger than " << MINIM_X_SIZE << " !" << std::endl;
-		std::cout << "The X and Y size are set to default : " << MINIM_X_SIZE << std::endl;
+		std::cout << "The X and Y size are set to default : " << MINIM_X_SIZE << " , " << MINIM_Y_SIZE<< std::endl;
 		board_size_x = MINIM_X_SIZE;
 		board_size_y = MINIM_Y_SIZE;
 
@@ -27,11 +27,11 @@ void setboardSize(int x_size, int y_size)
 		board_size_x = x_size;
 		board_size_y = y_size;
 	}
-	for each (std::vector<bool> x in curentboard)
+	for each (std::vector<bool> x in currentBoard)
 	{
 		x.clear();
 	}
-	curentboard.clear();
+	currentBoard.clear();
 	for (int indexY = 0; indexY < board_size_y; indexY++)
 	{
 		std::vector<bool>newRow;
@@ -39,23 +39,23 @@ void setboardSize(int x_size, int y_size)
 		{
 			newRow.push_back(false);
 		}
-		curentboard.push_back(newRow);
+		currentBoard.push_back(newRow);
 	}
 
 
 }
 
-void copyBoard()
+void copyPreviousBoardToCurrentBoard()
 {
 
-	for each (std::vector<bool> var in prevewsboard)
+	for each (std::vector<bool> var in previousBoard)
 	{
 		var.clear();
 	}
-	prevewsboard.clear();
-	for each (std::vector<bool> var in curentboard)
+	previousBoard.clear();
+	for each (std::vector<bool> var in currentBoard)
 	{
-		prevewsboard.push_back(std::vector<bool>(var));
+		previousBoard.push_back(std::vector<bool>(var));
 	}
 
 }
@@ -66,12 +66,12 @@ bool isAlive(int x, int y)
 	{
 		return false;
 	}
-	return curentboard[y][x];
+	return currentBoard[y][x];
 }
 
 void nextBoard()
 {
-	copyBoard();
+	copyPreviousBoardToCurrentBoard();
 	for (int y = 0; y < board_size_y; y++)
 	{
 		for (int x = 0; x < board_size_x; x++)
@@ -91,7 +91,7 @@ void nextBoard()
 					{
 						continue;
 					}
-					if (prevewsboard[neiby][neibx])
+					if (previousBoard[neiby][neibx])
 					{
 						neighborh++;
 					}
@@ -99,21 +99,23 @@ void nextBoard()
 				}
 			}
 
-			if (curentboard[y][x])
+			if (currentBoard[y][x])
 			{
 				if (neighborh == 2 || neighborh == 3)
 				{
-					curentboard[y][x] = true;
+					currentBoard[y][x] = true;
 				}
 				else
 				{
-					curentboard[y][x] = false;
+					currentBoard[y][x] = false;
 				}
 			}
 			else
 			{
 				if (neighborh == 3)
-					curentboard[y][x] = true;
+					currentBoard[y][x] = true;
+				else
+					currentBoard[y][x] = false;
 			}
 		}
 	}
@@ -156,7 +158,7 @@ void randomize()
 	{
 		for (int j = 0; j < board_size_y; j++)
 		{
-			curentboard[j][i] = (rand() > RAND_MAX / 2);
+			currentBoard[j][i] = (rand() > RAND_MAX / 2);
 		}
 	}
 }
@@ -177,11 +179,11 @@ void drawBlock(int x, int y)
 			{
 				if (i == 0 || i == 3 || j == 0 || j == 3)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 				}
 				else
 				{
-					curentboard[tempy][tempx] = true;
+					currentBoard[tempy][tempx] = true;
 
 				}
 			}
@@ -200,16 +202,16 @@ void drawBoat(int x, int y)
 			{
 				if (i == 0 || i == 4 || j == 0 || j == 4)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 
 				}
 				if ((i == 1 && j == 3) || (j == 1 && i == 3) || (j == 3 && i == 3) || (j == 2 && i == 2))
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
-				curentboard[tempy][tempx] = true;
+				currentBoard[tempy][tempx] = true;
 			}
 		}
 	}
@@ -227,11 +229,11 @@ void drawBlinker(int x, int y)
 			{
 				if (i >= 1 && i <= 3 && j == 2)
 				{
-					curentboard[tempy][tempx] = true;
+					currentBoard[tempy][tempx] = true;
 				}
 				else
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 				}
 			}
 		}
@@ -252,11 +254,11 @@ void drawBeacon(int x, int y)
 
 
 				{
-					curentboard[tempy][tempx] = true;
+					currentBoard[tempy][tempx] = true;
 				}
 				else
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 				}
 			}
 		}
@@ -276,14 +278,14 @@ void drawGlider(int x, int y)
 			{
 				if (i == 0 || i == 4 || j == 0 || j == 4)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				if ((i == 1 && (j == 1 || j == 3)) || (i == 2 && (j == 1 || j == 2))) {
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
-				curentboard[tempy][tempx] = true;
+				currentBoard[tempy][tempx] = true;
 
 			}
 		}
@@ -302,7 +304,7 @@ void drawPulsar(int x, int y)
 				//drawng the border and empty lines from pozition 4 8 and 12
 				if (i == 0 || i == 16 || j == 0 || j == 16 || i == 4 || i == 8 || i == 12 || j == 4 || j == 8 || j == 12)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				//drawing the 3x3 sqare in the corners
@@ -311,30 +313,30 @@ void drawPulsar(int x, int y)
 					(i >= 13 && i <= 15) && (j >= 1 && j <= 3) ||
 					(i >= 13 && i <= 15) && (j >= 13 && j <= 15))
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				// drawng the rectangle between L shapes
 				if ((i >= 6 && i <= 10) && (j == 1 || j == 2 || j == 14 || j == 15) ||
 					(j >= 6 && j <= 10) && (i == 1 || i == 2 || i == 14 || i == 15))
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				//drawing the litel dreptangle 
 				if (((i == 3 || i == 13) && (j == 7 || j == 9)) || ((j == 3 || j == 13) && (i == 7 || i == 9)))
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				//drawing the diagonales
 				if (i == j || j == 16 - i)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				//fill evriting left whith live cells
-				curentboard[tempy][tempx] = true;
+				currentBoard[tempy][tempx] = true;
 
 			}
 
@@ -355,21 +357,21 @@ void drawPendadecatholon(int x, int y)
 			{
 				if (i < 4 || i>13 || j < 4 || j>6)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				if ((i == 4 || i == 5 || i == 12 || i == 13 || (i > 6 && i < 11)) && (j == 4 || j == 6))
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 				if ((i == 6 || i == 11) && j == 5)
 				{
-					curentboard[tempy][tempx] = false;
+					currentBoard[tempy][tempx] = false;
 					continue;
 				}
 
-				curentboard[tempy][tempx] = true;
+				currentBoard[tempy][tempx] = true;
 			}
 		}
 	}
