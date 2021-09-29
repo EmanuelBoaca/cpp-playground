@@ -1,6 +1,6 @@
 #pragma once
 #include "Board.h"
-#include "Pattern.h"
+
 #include <list>
 class GameOfLife
 {
