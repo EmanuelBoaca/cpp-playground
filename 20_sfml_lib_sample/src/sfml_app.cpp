@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <thread>
-#include "game_of_life.h"
+//#include "game_of_life.h"
 SfmlApp::SfmlApp(
 	std::pair<unsigned int, unsigned int> window_size,
 	std::pair<unsigned int, unsigned int> cell_size
@@ -24,7 +24,7 @@ std::string getMessageForActiveStatus(bool active)
 		return "Simulation is ACTIVE. Press <SPACE> to toggle the simulation. Press <ESC> to exit.";
 	}
 
-	return "Simulation is PAUSED. Press <SPACE> to toggle the simulation. Press <ESC> to exit.";
+	return "Simulation is PAUSED. Press <SPACE> to toggle the simulation. Press <ESC> to exit.\nPress + or - to  change the simulation speed.\nPress R for random start status\nPress C to clear the board";
 }
 
 void SfmlApp::init()
@@ -57,7 +57,10 @@ void SfmlApp::init()
 	// Store the world size for later use.
 	world_size_.first = max_width / cell_size_.first - 1;
 	world_size_.second = max_height / cell_size_.second - 1;
-	setboardSize(world_size_.first, world_size_.second);
+	//gameOfLife = GameOfLife();
+	gameOfLife.setWidth(world_size_.first);
+	gameOfLife.setHeight(world_size_.second);
+//	setboardSize(world_size_.first, world_size_.second);
 	// Initialize the world map with vertices.
 	for (size_t cell_y = 0; cell_y < max_height / cell_size_.first - 1; cell_y++)
 	{
@@ -109,14 +112,20 @@ void SfmlApp::run()
 				if (event.key.code == sf::Keyboard::Add)
 				{
 					duration_in_millis_between_updates -= 10;
-					if (duration_in_millis_between_updates < 50)
-						duration_in_millis_between_updates = 50;
+					if (duration_in_millis_between_updates < 10)
+						duration_in_millis_between_updates = 10;
 				}
 				if (event.key.code == sf::Keyboard::Subtract)
 				{
 					duration_in_millis_between_updates += 10;
 					
 				}
+				if (event.key.code == sf::Keyboard::C)
+				{
+					gameOfLife.clearBoard();
+				}
+				if (event.key.code == sf::Keyboard::R)
+					gameOfLife.randomizeBoard();
 			}
 			if (event.type == sf::Event::MouseMoved)
 			{
@@ -132,8 +141,9 @@ void SfmlApp::run()
 					int clicked_cell_y = event.mouseMove.y * view_height / (cell_size_.second * win_height);
 
 					// TODO: maybe update a world matrix?
+					gameOfLife.setCellAliveOrDeath(clicked_cell_x, clicked_cell_y, GameOfLife::status::ALIVE);
 					setCellColor(clicked_cell_x, clicked_cell_y, living_cell_color_);
-					drawPixel(clicked_cell_x, clicked_cell_y, true);
+					//drawPixel(clicked_cell_x, clicked_cell_y, true);
 
 				}
 				if (mousebtn_pressed == presed::RIGHT)
@@ -147,8 +157,9 @@ void SfmlApp::run()
 					int clicked_cell_y = event.mouseMove.y * view_height / (cell_size_.second * win_height);
 
 					// TODO: maybe update a world matrix?
-					setCellColor(clicked_cell_x/ cell_size_.first, clicked_cell_y, dead_cell_color_);
-					drawPixel(clicked_cell_x, clicked_cell_y, false);
+					setCellColor(clicked_cell_x, clicked_cell_y, dead_cell_color_);
+					gameOfLife.setCellAliveOrDeath(clicked_cell_x, clicked_cell_y);
+					//drawPixel(clicked_cell_x, clicked_cell_y, false);
 				}
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
@@ -156,10 +167,28 @@ void SfmlApp::run()
 				if (event.mouseButton.button == sf::Mouse::Button::Left)
 				{
 					mousebtn_pressed = presed::LEFT;
+					size_t view_width = static_cast<size_t>(window_.getView().getSize().x);
+					size_t view_height = static_cast<size_t>(window_.getView().getSize().y);
+					size_t win_width = static_cast<size_t>(window_.getSize().x);
+					size_t win_height = static_cast<size_t>(window_.getSize().y);
+
+					int clicked_cell_x = event.mouseButton.x * view_width / (cell_size_.first * win_width);
+					int clicked_cell_y = event.mouseButton.y * view_height / (cell_size_.second * win_height);
+					setCellColor(clicked_cell_x, clicked_cell_y, living_cell_color_);
+					gameOfLife.setCellAliveOrDeath(clicked_cell_x, clicked_cell_y,GameOfLife::status::ALIVE);
 				}
 				if (event.mouseButton.button == sf::Mouse::Button::Right)
 				{
 					mousebtn_pressed = presed::RIGHT;
+					size_t view_width = static_cast<size_t>(window_.getView().getSize().x);
+					size_t view_height = static_cast<size_t>(window_.getView().getSize().y);
+					size_t win_width = static_cast<size_t>(window_.getSize().x);
+					size_t win_height = static_cast<size_t>(window_.getSize().y);
+
+					int clicked_cell_x = event.mouseButton.x * view_width / (cell_size_.first * win_width);
+					int clicked_cell_y = event.mouseButton.y * view_height / (cell_size_.second * win_height);
+					setCellColor(clicked_cell_x , clicked_cell_y, dead_cell_color_);
+					gameOfLife.setCellAliveOrDeath(clicked_cell_x, clicked_cell_y);
 				}
 			}
 			if (event.type == sf::Event::MouseButtonReleased)
@@ -247,17 +276,17 @@ void SfmlApp::render()
 void SfmlApp::updateWorld()
 {
 	// TODO: feel free to add function arguments as deemed necessary.
-	nextBoard();
-	for(int i=0;i<world_size_.second;i++)
-		for (int j = 0; j < world_size_.first; j++)
+	
+	for(int i=0;i<world_size_.first;i++)
+		for (int j = 0; j < world_size_.second; j++)
 		{
-			if (isAlive(j, i))
+			if (gameOfLife.getCell(i,j)==GameOfLife::status::ALIVE)
 			{
-				setCellColor(j,i, living_cell_color_);
+				setCellColor(i,j, living_cell_color_);
 			}
 			else 
-				setCellColor(j, i, dead_cell_color_);
+				setCellColor(i, j, dead_cell_color_);
 		}
 
-	
+	gameOfLife.generateNextState();
 }

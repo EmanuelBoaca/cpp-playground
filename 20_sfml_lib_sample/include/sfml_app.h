@@ -6,7 +6,7 @@
 #include <utility>
 // SFML headers
 #include "SFML/Graphics.hpp"
-
+#include "GameOfLife.h"
 class SfmlApp
 {
 private:
@@ -14,7 +14,7 @@ private:
 	std::vector<sf::Vertex> cell_vertices_;
 	std::pair<unsigned int, unsigned int> cell_size_;
 	std::pair<unsigned int, unsigned int> world_size_;
-
+	GameOfLife gameOfLife;
 	sf::Color living_cell_color_;
 	sf::Color dead_cell_color_;
 	sf::Text gui_text_;

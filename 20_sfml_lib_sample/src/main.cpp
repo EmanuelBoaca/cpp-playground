@@ -16,6 +16,7 @@ void hide_console()
 
 int main()
 {
+	
 	hide_console();
 
 	// TODO: maybe load from a configuration file? INI file?
@@ -31,4 +32,5 @@ int main()
 	SfmlApp app(preferred_window_size, preferred_cell_size);
 	app.init();
 	app.run();
+	
 }
