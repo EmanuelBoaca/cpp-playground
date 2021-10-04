@@ -15,7 +15,9 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules/;${CMAKE_MODULE_PATH}
 set(CMAKE_CXX_STANDARD 11)
 
 # specify the folder(s) where the compiler should look for include files
-include_directories(include) #in our case the 'include' folder present in the root folder
+include_directories(include
+../20_game_of_life_dll/include
+) #in our case the 'include' folder present in the root folder
 
 # or we can use file(GLOB ...) for wildcard additon (add any file ending with '.h')
 file(GLOB HEADER_FILES "include/*.h")
