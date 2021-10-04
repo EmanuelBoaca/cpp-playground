@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(453,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  Source.cpp
+D:\work\cpp\cpp-playground\Curs\Aplicatie_Curs_3\Source.cpp(102,29): warning C4305: 'initializing': truncation from '__int64' to 'int'
+D:\work\cpp\cpp-playground\Curs\Aplicatie_Curs_3\Source.cpp(102,18): warning C4309: 'initializing': truncation of constant value
+  Aplicatie_Curs_3.vcxproj -> D:\work\cpp\cpp-playground\Curs\Aplicatie_Curs_3\bin\Debug\Aplicatie_Curs_3.exe

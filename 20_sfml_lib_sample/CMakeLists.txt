@@ -34,5 +34,6 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SRC_FILES})
 # MESSAGE(STATUS "***SFML_DEPENDENCIES ${SFML_DEPENDENCIES}")
 # MESSAGE(STATUS "sfml-graphics sfml-audio")
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
+target_link_libraries(${PROJECT_NAME} 20_game_of_life_dll)
 # target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 

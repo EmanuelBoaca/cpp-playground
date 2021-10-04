@@ -11,7 +11,7 @@ int main()
 	
 	init();
 	//randomize();
-	drawShape(shapes::BOAT, 0, 0);
+	drawShape(shapes::GLIDER,0, 0);
 	for (int i = 0; i < 100; i++)
 	{
 		

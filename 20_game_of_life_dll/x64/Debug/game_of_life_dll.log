@@ -1,0 +1,29 @@
+﻿  GameOfLife.cpp
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(59,12): warning C4091: '': ignored on left of 'GameOfLife' when no variable is declared
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(3,25): warning C4273: 'GameOfLife::GameOfLife': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(46,3): message : see previous definition of '{ctor}'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(5,1): warning C4273: 'GameOfLife::setHeight': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(48,8): message : see previous definition of 'setHeight'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(9,1): warning C4273: 'GameOfLife::setWidth': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(47,8): message : see previous definition of 'setWidth'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(13,1): warning C4273: 'GameOfLife::generateNextState': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(49,8): message : see previous definition of 'generateNextState'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(50,1): warning C4273: 'GameOfLife::getNumberOfNeighbourgsAlive': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(34,7): message : see previous definition of 'getNumberOfNeighbourgsAlive'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(72,1): warning C4273: 'GameOfLife::drawBlok': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(36,8): message : see previous definition of 'drawBlok'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(89,1): warning C4273: 'GameOfLife::drawBoat': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(37,8): message : see previous definition of 'drawBoat'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(112,1): warning C4273: 'GameOfLife::setCellAliveOrDeath': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(50,8): message : see previous definition of 'setCellAliveOrDeath'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(117,1): warning C4273: 'GameOfLife::drawPattern': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(51,8): message : see previous definition of 'drawPattern'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(149,1): warning C4273: 'GameOfLife::getCell': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(52,10): message : see previous definition of 'getCell'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(153,1): warning C4273: 'GameOfLife::clearBoard': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(53,8): message : see previous definition of 'clearBoard'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(157,1): warning C4273: 'GameOfLife::randomizeBoard': inconsistent dll linkage
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.h(54,8): message : see previous definition of 'randomizeBoard'
+D:\work\cpp\cpp-playground\game_of_life_dll\GameOfLife.cpp(159,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+     Creating library D:\work\cpp\cpp-playground\build\x64\Debug\game_of_life_dll.lib and object D:\work\cpp\cpp-playground\build\x64\Debug\game_of_life_dll.exp
+  game_of_life_dll.vcxproj -> D:\work\cpp\cpp-playground\build\x64\Debug\game_of_life_dll.dll
